@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
    <title>Shopping Cart</title>
    <meta charset="utf-8">
@@ -10,14 +9,13 @@
    <link href="style.css" rel="stylesheet">
 </head>
 
-<body>
-
-   <section>
+<body id="body">
+   <section id="main-section">
       <div class="container">
          <div class="cart">
             <div class="col-md-12 col-lg-10 mx-auto">
-               <div class="cart-item">
-                  <div class="row">
+               <div id="phn-cart" class="cart-item">
+                  <div class="row phn">
                      <div class="col-md-7 center-item">
                         <img src="images/product-1.png" alt="">
                         <h5>iPhone 11 128GB Black</h5>
@@ -25,11 +23,11 @@
 
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="phn-minus-btn" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="input-value" type="text" class="form-control text-center" value="1">
+                           <button id="phn-plus-btn" class="btn btn-default"><i class="fas fa-plus"></i></button>
                         </div>
-                        <h5>$1219</h5>
+                        <h5>$<span id="phn-price">1219</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -43,12 +41,12 @@
                      </div>
                      <div class="col-md-5 center-item">
                         <div class="input-group number-spinner">
-                           <button class="btn btn-default"><i class="fas fa-minus"></i></button>
-                           <input type="text" class="form-control text-center" value="1">
-                           <button class="btn btn-default"><i class="fas fa-plus"></i></button>
+                           <button id="case-minus-btn" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                           <input id="input-value" type="text" class="form-control text-center" value="1">
+                           <button id="case-plus-btn" class="btn btn-default"><i class="fas fa-plus"></i></button>
 
                         </div>
-                        <h5>$59</h5>
+                        <h5>$ <span id="case-price">59</span></h5>
                         <img src="images/remove.png" alt="" class="remove-item">
                      </div>
                   </div>
@@ -64,9 +62,9 @@
                      </div>
 
                      <div class="col-md-4 status">
-                        <h5>$1,278</h5>
-                        <h5>$0</h5>
-                        <h5>$1,278</h5>
+                        <h5>$<span id="subtotal">1,278</span></h5>
+                        <h5>$<span id="tax">0</span> </h5>
+                        <h5>$<span id="total">1,278</span></h5>
                      </div>
                   </div>
                </div>
@@ -77,6 +75,96 @@
          </div>
       </div>
    </section>
+   <script>
+// phone plus minus button & input value
+
+const phnPlusBtn = document.getElementById("phn-plus-btn");
+phnPlusBtn.addEventListener("click", function () {
+    increment("input-value", "phn-price", 1219);
+    updateSum("total");
+    updateSum("subtotal");
+})
+
+const phnMinusBtn = document.getElementById("phn-minus-btn");
+phnMinusBtn.addEventListener("click", function() {
+    decrement("input-value", "phn-price", 1219);
+    updateSum("total");
+    updateSum("subtotal");
+})
+
+
+var inputPhn = document.getElementById("input-value");
+inputPhn.addEventListener("keyup", function(event) {
+    enterValue("input-value", "phn-price", 1219);
+    updateSum("total");
+    updateSum("subtotal");
+})
+
+// case plus minus button
+
+const minusBtn2 = document.getElementById("case-minus-btn");
+minusBtn2.addEventListener("click", function () {
+    decrement("input-value", "case-price", 59);
+    updateSum("total");
+    updateSum("subtotal");
+})
+
+const plusBtn2 = document.getElementById("case-plus-btn");
+plusBtn2.addEventListener("click", function () {
+    increment("input-value", "case-price", 59);
+    updateSum("total");
+    updateSum("subtotal");
+})
+
+var inputCase = document.getElementById("input-value");
+inputCase.addEventListener("keyup", function(event) {
+    enterValue("input-value", "case-price", 59);
+    updateSum("total");
+    updateSum("subtotal");
+})
+
+// Second Item
+
+function decrement(quantity, unitPrice, vPrice) {
+    let currentValue = document.getElementById(quantity).value;
+    let updatedValue = parseFloat(currentValue)-1;
+    if (updatedValue >= 0) {document.getElementById(quantity).value = updatedValue}
+    const price = document.getElementById(unitPrice).innerText; 
+    if (updatedValue >= 0) {
+        const updatedPrice = parseFloat(price) - vPrice;
+        document.getElementById(unitPrice).innerText = updatedPrice;
+    }
+}
+
+function increment(quantity, unitPrice, vPrice) {
+    let currentValue = document.getElementById(quantity).value;
+    let updatedValue = parseFloat(currentValue)+1;
+    if (updatedValue >= 0) {document.getElementById(quantity).value = updatedValue}
+    const price = document.getElementById(unitPrice).innerText; 
+    const updatedPrice = parseFloat(price) + vPrice;
+    document.getElementById(unitPrice).innerText = updatedPrice;
+}
+
+function enterValue(quantity, unitPrice, vPrice) {
+    if (event.keyCode === 13) {
+      var valuePassed = document.getElementById(quantity).value;
+      const updatedPrice = valuePassed * vPrice;
+      document.getElementById(unitPrice).innerText = updatedPrice;
+    }
+}
+
+function sumUp(product1, product2) {
+    var phn = document.getElementById(product1).innerText;
+    var casing = document.getElementById(product2).innerText;
+    var subtotal = parseFloat(phn) + parseFloat(casing);
+    return subtotal;
+}
+
+function updateSum(id) {
+    document.getElementById(id).innerText = sumUp("phn-price", "case-price");
+}
+
+   </script>
 </body>
 
 </html>
